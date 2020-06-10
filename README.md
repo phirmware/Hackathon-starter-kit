@@ -8,7 +8,7 @@ Inspired by Obinna Odirionye's Node/Typescript starter kit https://github.com/ne
 ### Setting up
 ```bash
 # Change directory to your go src folder
- cd $PATH/go/src
+ cd $GOPATH/src
 
 # Get the latest code
  git clone https://github.com/phirmware/Hackathon-starter-kit.git
