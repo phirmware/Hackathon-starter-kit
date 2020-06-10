@@ -25,6 +25,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer svc.Close()
+	svc.AutoMigrate()
 
 	staticC := controllers.NewStatic()
 	userC := controllers.NewUser(svc.User)
