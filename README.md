@@ -1,4 +1,5 @@
 # Hackathon Starter Kit(Go lang)
+###### Still under development👷....
 
 A Golang Boilerplate with Authentication(Local, Github, Facebook, Twitter, Google, LinkedIn, Dropbox, Slack, Discord), Authorization, and CRUD functionality + PWA Support!
 
