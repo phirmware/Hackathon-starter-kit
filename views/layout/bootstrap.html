@@ -43,9 +43,10 @@
 </head>
 
 <body>
-
-
     {{ template "nav" }}
+    {{ if .Alert }}
+    {{ template "alert" .Alert }}
+    {{ end }}
     <br>
     {{ template "yield" }}
     {{ template "footer" }}
