@@ -1,7 +1,9 @@
 # Hackathon Starter Kit(Go lang)
 ###### Still under development👷....
 
-A Golang Boilerplate with Authentication(Local, Github, Facebook, Twitter, Google, LinkedIn, Dropbox, Slack, Discord), Authorization, and CRUD functionality + PWA Support!
+A Golang Boilerplate with Authentication(Local, Github, Facebook, Twitter, Google, LinkedIn, Dropbox, Slack, Discord), Authorization, and CRUD functionality + PWA Support! 
+
+Inspired by Obinna Odirionye's Node/Typescript starter kit https://github.com/nerdeveloper/hackathon-starter-kit
 
 ### Setting up
 ```bash
