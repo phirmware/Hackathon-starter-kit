@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"path/filepath"
@@ -50,6 +49,5 @@ func NewView(layout string, fileNames ...string) *Views {
 // Render is a function that renders a template
 func (v *Views) Render(w http.ResponseWriter, data interface{}) {
 	SetData(data)
-	fmt.Print(data, "Before exec template")
 	v.t.ExecuteTemplate(w, v.template, data)
 }

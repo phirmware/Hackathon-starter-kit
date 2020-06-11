@@ -34,8 +34,9 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", staticC.Home)
 	r.HandleFunc("/signup", userC.SignUp).Methods("GET")
-	r.HandleFunc("/login", userC.Login).Methods("GET")
 	r.HandleFunc("/signup", userC.Register).Methods("POST")
+	r.HandleFunc("/login", userC.Login).Methods("GET")
+	r.HandleFunc("/login", userC.SignIn).Methods("POST")
 
 	fmt.Printf("Listening at port %s", serverPort)
 	http.ListenAndServe(serverPort, r)

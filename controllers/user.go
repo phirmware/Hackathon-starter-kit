@@ -9,7 +9,7 @@ import (
 
 // User defines the shape of a user
 type User struct {
-	us         models.UserDB
+	us         models.UserService
 	LoginView  *views.Views
 	SignUpView *views.Views
 }
@@ -22,8 +22,13 @@ type signUpForm struct {
 	Password  string `schema:"password"`
 }
 
+type signInForm struct {
+	Email    string `schema:"email"`
+	Password string `schema:"password"`
+}
+
 // NewUser returns the User struct
-func NewUser(us models.UserDB) *User {
+func NewUser(us models.UserService) *User {
 	return &User{
 		us:         us,
 		LoginView:  views.NewView("bootstrap", "user/login"),
@@ -51,6 +56,7 @@ func (u *User) Register(w http.ResponseWriter, r *http.Request) {
 		LastName:  form.LastName,
 		UserName:  form.UserName,
 		Email:     form.Email,
+		Password:  form.Password,
 	}
 	if err := u.us.Create(&user); err != nil {
 		vd.Alert = &views.Alert{
@@ -61,4 +67,26 @@ func (u *User) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintln(w, "User succesfully created")
+}
+
+// SignIn handles the signin route POST /login
+func (u *User) SignIn(w http.ResponseWriter, r *http.Request) {
+	// TODO: Implement this
+	form := &signInForm{}
+	ParseForm(r, form)
+	user := &models.User{
+		Email:    form.Email,
+		Password: form.Password,
+	}
+	user, err := u.us.Authenticate(user)
+	if err != nil {
+		data := views.Data{}
+		data.Alert = &views.Alert{
+			Type:    "danger",
+			Message: err.Error(),
+		}
+		u.LoginView.Render(w, data)
+		return
+	}
+	fmt.Fprintln(w, user)
 }

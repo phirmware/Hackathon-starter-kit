@@ -7,7 +7,7 @@ import (
 // Services struct defines all services
 type Services struct {
 	db   *gorm.DB
-	User UserDB
+	User UserService
 }
 
 // NewServices returns the services struct
