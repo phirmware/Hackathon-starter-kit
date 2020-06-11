@@ -7,6 +7,7 @@
 4. Setup models ✔
 5. Setup database with docker and shell ✔
 6. Setup User creation and Authentication ✔
-7. Setup User login ❎
+7. Setup User login ✔
+8. Improve User Alert popup❎
 
 

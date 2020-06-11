@@ -42,7 +42,7 @@ var (
 	ErrPasswordHashMissing = errors.New("models: Password hash missing")
 	// ErrInvalidPassword message for invalid password
 	ErrInvalidPassword = errors.New("models: Password Invalid")
-	// ErrUserNotFound
+	// ErrUserNotFound is returned when a user is not found
 	ErrUserNotFound = errors.New("models: We cant find an account with that email")
 )
 
