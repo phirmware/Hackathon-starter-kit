@@ -11,6 +11,11 @@ Inspired by Obinna Odirionye's Node/Typescript starter kit https://github.com/ne
 ##### You can view the application here
 https://salty-basin-02063.herokuapp.com/
 
+##### You can also track application progress in 
+```bash
+action/project-tracker.md
+```
+
 ### Setting up
 ```bash
 # Change directory to your go src folder
