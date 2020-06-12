@@ -5,6 +5,7 @@ import (
 	"hackathon/controllers"
 	"hackathon/models"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -17,7 +18,8 @@ const (
 	dbname = "hackathon_dev"
 )
 
-const serverPort = ":3000"
+//const serverPort = ":3000"
+var serverPort = os.Getenv("PORT")
 
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable", host, port, user, dbname)
