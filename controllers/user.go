@@ -66,12 +66,12 @@ func (u *User) Register(w http.ResponseWriter, r *http.Request) {
 		u.SignUpView.Render(w, vd)
 		return
 	}
+	// TODO: Impement after successfull signup
 	fmt.Fprintln(w, "User succesfully created")
 }
 
 // SignIn handles the signin route POST /login
 func (u *User) SignIn(w http.ResponseWriter, r *http.Request) {
-	// TODO: Implement this
 	form := &signInForm{}
 	ParseForm(r, form)
 	user := &models.User{
@@ -88,5 +88,6 @@ func (u *User) SignIn(w http.ResponseWriter, r *http.Request) {
 		u.LoginView.Render(w, data)
 		return
 	}
+	// TODO: Impement after successfull login
 	fmt.Fprintln(w, user)
 }

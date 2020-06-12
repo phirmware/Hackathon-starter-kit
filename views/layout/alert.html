@@ -1,6 +1,9 @@
 {{ define "alert" }}
 <section style="padding: 80px 0 0 0;">
-    <div class="alert alert-{{ .Type }} alert-dismissible">
+    <div class="alert alert-{{ .Type }} alert-dismissible aos-init aos-animate text-center" style="font-weight: lighter;
+    width: 50%;
+    margin: auto;
+">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong class="text-capitalize">{{ .Type }}!</strong> {{ .Message }}.
     </div>
