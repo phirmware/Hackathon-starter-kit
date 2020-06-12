@@ -8,6 +8,7 @@
 5. Setup database with docker and shell ✔
 6. Setup User creation and Authentication ✔
 7. Setup User login ✔
+8. Host application on heroku ✔
 8. Improve User Alert popup❎
 
 
