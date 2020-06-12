@@ -18,11 +18,13 @@ const (
 	dbname = "hackathon_dev"
 )
 
-// const serverPort = ":3000"
-
 var serverPort = os.Getenv("PORT")
 
 func main() {
+	if serverPort == "" {
+		serverPort = ":3000"
+	}
+
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable", host, port, user, dbname)
 	svc, err := models.NewServices(psqlInfo)
 	if err != nil {
