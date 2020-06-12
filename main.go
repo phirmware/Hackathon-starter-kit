@@ -18,7 +18,8 @@ const (
 	dbname = "hackathon_dev"
 )
 
-//const serverPort = ":3000"
+// const serverPort = ":3000"
+
 var serverPort = os.Getenv("PORT")
 
 func main() {

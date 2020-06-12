@@ -14,7 +14,8 @@ type Services struct {
 
 // NewServices returns the services struct
 func NewServices(connectionString string) (*Services, error) {
-	db, err := gorm.Open("postgres", os.Getenv("DATABASE_URL"))
+	herokuDB := os.Getenv("DATABASE_URL")
+	db, err := gorm.Open("postgres", herokuDB)
 	if err != nil {
 		return nil, err
 	}
