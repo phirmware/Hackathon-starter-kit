@@ -1,0 +1,63 @@
+{
+	"ImportPath": "hackathon",
+	"GoVersion": "go1.13",
+	"GodepVersion": "v80",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.7.4",
+			"Rev": "75dcda0896e109a2a22c9315bca3bb21b87b2ba5"
+		},
+		{
+			"ImportPath": "github.com/gorilla/schema",
+			"Comment": "v1.1.0-5-g61751c9",
+			"Rev": "61751c9687439bf8cd824ad7eec0d21db1a1b804"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm",
+			"Comment": "v1.9.12-3-g7ea143b",
+			"Rev": "7ea143b5484fe28148d5c73cfd43b26e8a89c94e"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm/dialects/postgres",
+			"Comment": "v1.9.12-3-g7ea143b",
+			"Rev": "7ea143b5484fe28148d5c73cfd43b26e8a89c94e"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/inflection",
+			"Comment": "v1.0.0-2-g196e6ce",
+			"Rev": "196e6ce06ca4513fbcfcbc35dc15f66074df47c9"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "v1.5.2",
+			"Rev": "f3b22b2cad9e4567803b7ffd9853b8acda021438"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/hstore",
+			"Comment": "v1.5.2",
+			"Rev": "f3b22b2cad9e4567803b7ffd9853b8acda021438"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/oid",
+			"Comment": "v1.5.2",
+			"Rev": "f3b22b2cad9e4567803b7ffd9853b8acda021438"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/scram",
+			"Comment": "v1.5.2",
+			"Rev": "f3b22b2cad9e4567803b7ffd9853b8acda021438"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "06a226fb4e3765ef3f48aa2852b401bc7b98e981"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "06a226fb4e3765ef3f48aa2852b401bc7b98e981"
+		}
+	]
+}
