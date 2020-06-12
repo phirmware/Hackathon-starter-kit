@@ -22,7 +22,7 @@ var serverPort = os.Getenv("PORT")
 
 func main() {
 	if serverPort == "" {
-		serverPort = ":3000"
+		serverPort = "3000"
 	}
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable", host, port, user, dbname)
@@ -44,5 +44,5 @@ func main() {
 	r.HandleFunc("/login", userC.SignIn).Methods("POST")
 
 	fmt.Printf("Listening at port %s", serverPort)
-	http.ListenAndServe(serverPort, r)
+	http.ListenAndServe(":"+serverPort, r)
 }
