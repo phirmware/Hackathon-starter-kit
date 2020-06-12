@@ -35,6 +35,14 @@ func (s *Services) AutoMigrate() error {
 	return s.db.AutoMigrate(&User{}).Error
 }
 
+// DestroyAndCreate drops all tables and recreates
+func (s *Services) DestroyAndCreate() error {
+	if err := s.db.DropTableIfExists(&User{}).Error; err != nil {
+		return err
+	}
+	return s.AutoMigrate()
+}
+
 // Close closes connection to the database
 func (s *Services) Close() error {
 	return s.db.Close()

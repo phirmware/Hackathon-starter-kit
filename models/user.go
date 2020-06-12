@@ -2,6 +2,8 @@ package models
 
 import (
 	"errors"
+	"hackathon/hash"
+	"hackathon/rand"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -17,10 +19,13 @@ type User struct {
 	Email        string `gorm:"not null"`
 	Password     string `gorm:"-"`
 	PasswordHash string
+	Remember     string
+	RememberHash string
 }
 
 const (
 	userPepper = "secret-user-pepper"
+	hashKey    = "secret-hash-key"
 )
 
 var (
@@ -34,6 +39,8 @@ var (
 	ErrEmailMissing = errors.New("models: Please provide your Email")
 	// ErrPasswordMissing message for missing
 	ErrPasswordMissing = errors.New("models: Please provide a password")
+	// ErrEmailExists is returned when user tries to signup with
+	ErrEmailExists = errors.New("models: A user exists with that email")
 	// ErrSomethingWentWrong message for missing
 	ErrSomethingWentWrong = errors.New("models: Something went wrong, please try again")
 	// ErrPasswordTooShort message for short password
@@ -66,11 +73,13 @@ func newUserGorm(db *gorm.DB) *userGorm {
 
 type userVal struct {
 	UserDB
+	hmac hash.HMAC
 }
 
 func newUserVal(ug *userGorm) *userVal {
 	return &userVal{
 		UserDB: ug,
+		hmac:   hash.NewHMAC(hashKey),
 	}
 }
 
@@ -132,6 +141,13 @@ func (uv *userVal) checkForEmail(user *User) error {
 	return nil
 }
 
+func (uv *userVal) checkIfEmailExist(user *User) error {
+	if foundUser, _ := uv.UserDB.ByEmail(user); foundUser != nil {
+		return ErrEmailExists
+	}
+	return nil
+}
+
 func (uv *userVal) checkForPassword(user *User) error {
 	if user.Password == "" {
 		return ErrPasswordMissing
@@ -163,6 +179,35 @@ func (uv *userVal) hashPasswordRequired(user *User) error {
 	return nil
 }
 
+func (uv *userVal) generateRememberToken(user *User) error {
+	token, err := rand.RememberToken()
+	if err != nil {
+		return ErrSomethingWentWrong
+	}
+	user.Remember = token
+	return nil
+}
+
+func (uv *userVal) rememberTokenRequired(user *User) error {
+	if user.Remember == "" {
+		return ErrSomethingWentWrong
+	}
+	return nil
+}
+
+func (uv *userVal) hashRememberToken(user *User) error {
+	hash := uv.hmac.Hash(user.Remember)
+	user.RememberHash = hash
+	return nil
+}
+
+func (uv *userVal) rememberHashRequired(user *User) error {
+	if user.RememberHash == "" {
+		return ErrSomethingWentWrong
+	}
+	return nil
+}
+
 func (uv *userVal) Create(user *User) error {
 	if err := runUserValFn(user,
 		uv.checkforFirstName,
@@ -171,8 +216,13 @@ func (uv *userVal) Create(user *User) error {
 		uv.checkForEmail,
 		uv.checkForPassword,
 		uv.passwordMinLength,
+		uv.checkIfEmailExist,
 		uv.hashPassword,
 		uv.hashPasswordRequired,
+		uv.generateRememberToken,
+		uv.rememberTokenRequired,
+		uv.hashRememberToken,
+		uv.rememberHashRequired,
 	); err != nil {
 		return err
 	}
@@ -197,7 +247,6 @@ func (us *userService) Authenticate(user *User) (*User, error) {
 func (uv *userVal) ByEmail(user *User) (*User, error) {
 	if err := runUserValFn(user,
 		uv.checkForEmail,
-		uv.checkForPassword,
 	); err != nil {
 		return nil, err
 	}

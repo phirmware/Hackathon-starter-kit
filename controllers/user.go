@@ -91,3 +91,7 @@ func (u *User) SignIn(w http.ResponseWriter, r *http.Request) {
 	// TODO: Impement after successfull login
 	fmt.Fprintln(w, user)
 }
+
+func (u *User) signIn(w http.ResponseWriter, r *http.Request) {
+	//
+}

@@ -32,6 +32,7 @@ func main() {
 	}
 	defer svc.Close()
 	svc.AutoMigrate()
+	// svc.DestroyAndCreate()
 
 	staticC := controllers.NewStatic()
 	userC := controllers.NewUser(svc.User)
