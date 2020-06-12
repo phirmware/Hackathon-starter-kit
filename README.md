@@ -5,6 +5,10 @@ A Golang Boilerplate with Authentication(Local, Github, Facebook, Twitter, Googl
 
 Inspired by Obinna Odirionye's Node/Typescript starter kit https://github.com/nerdeveloper/hackathon-starter-kit
 
+
+### You can view the application here
+https://salty-basin-02063.herokuapp.com/
+
 ### Setting up
 ```bash
 # Change directory to your go src folder
