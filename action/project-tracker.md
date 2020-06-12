@@ -9,6 +9,8 @@
 6. Setup User creation and Authentication ✔
 7. Setup User login ✔
 8. Host application on heroku ✔
-8. Improve User Alert popup❎
+8. Improve User Alert popup ✔
+9. Setup Remember token for cookie ✔
+10.Setup cookie authentication and authorization ❎
 
 
