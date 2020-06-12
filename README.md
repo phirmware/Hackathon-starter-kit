@@ -1,12 +1,14 @@
 # Hackathon Starter Kit(Go lang)
 ###### Still under development👷....
 
-A Golang Boilerplate with Authentication(Local, Github, Facebook, Twitter, Google, LinkedIn, Dropbox, Slack, Discord), Authorization, and CRUD functionality + PWA Support! 
+A Golang Boilerplate with Authentication(Local, Github, Facebook, Twitter, Google, LinkedIn, Dropbox, Slack, Discord), Authorization, and CRUD functionality + PWA Support! View app here https://salty-basin-02063.herokuapp.com/
 
 Inspired by Obinna Odirionye's Node/Typescript starter kit https://github.com/nerdeveloper/hackathon-starter-kit
 
 
-### You can view the application here
+![hackathon-starter-kit](public/snap/image.png)
+
+##### You can view the application here
 https://salty-basin-02063.herokuapp.com/
 
 ### Setting up
