@@ -12,7 +12,8 @@
 9. Improve User Alert popup ✔
 10. Setup Remember token for cookie ✔
 11. Setup cookie authentication and authorization ✔
-12. Setup middleware ❎
-12. Setup user context ❎
+12. Setup middleware ✔
+13. Setup user context ✔
+14. Setup User in data and views with middleware ❎
 
 
