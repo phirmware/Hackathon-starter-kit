@@ -2,12 +2,11 @@ package controllers
 
 import (
 	"fmt"
+	"hackathon/middleware"
 	"hackathon/models"
 	"hackathon/views"
 	"net/http"
 )
-
-const browserCookieName = "remember_token"
 
 // User defines the shape of a user
 type User struct {
@@ -101,7 +100,7 @@ func (u *User) signUserIn(w http.ResponseWriter, user *models.User) {
 		return
 	}
 	cookie := &http.Cookie{
-		Name:  browserCookieName,
+		Name:  middleware.BrowserCookieName,
 		Value: user.RememberHash,
 	}
 	http.SetCookie(w, cookie)
@@ -109,7 +108,7 @@ func (u *User) signUserIn(w http.ResponseWriter, user *models.User) {
 
 // CookieTest is used to test the cookie
 func (u *User) CookieTest(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie(browserCookieName)
+	cookie, err := r.Cookie(middleware.BrowserCookieName)
 	if err != nil {
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
@@ -122,4 +121,9 @@ func (u *User) CookieTest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%+v", user)
+}
+
+// Protected is a test route for middleware
+func (u *User) Protected(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "User is logged in")
 }

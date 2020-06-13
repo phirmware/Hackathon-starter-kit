@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"hackathon/controllers"
+	"hackathon/middleware"
 	"hackathon/models"
 	"net/http"
 	"os"
@@ -27,6 +28,7 @@ func main() {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable", host, port, user, dbname)
 	svc, err := models.NewServices(psqlInfo)
+	requireUserMW := middleware.NewRequireUser(svc.User)
 	if err != nil {
 		panic(err)
 	}
@@ -44,6 +46,7 @@ func main() {
 	r.HandleFunc("/login", userC.Login).Methods("GET")
 	r.HandleFunc("/login", userC.SignIn).Methods("POST")
 	r.HandleFunc("/cookie", userC.CookieTest).Methods("GET")
+	r.HandleFunc("/protected", requireUserMW.RequireUserMiddleWare(userC.Protected)).Methods("GET")
 
 	fmt.Printf("Listening at port %s", serverPort)
 	http.ListenAndServe(":"+serverPort, r)
