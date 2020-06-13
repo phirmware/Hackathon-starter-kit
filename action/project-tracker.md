@@ -11,6 +11,7 @@
 8. Host application on heroku ✔
 9. Improve User Alert popup ✔
 10. Setup Remember token for cookie ✔
-11. Setup cookie authentication and authorization ❎
+11. Setup cookie authentication and authorization ✔
+12. Setup user context ❎
 
 
