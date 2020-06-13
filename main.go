@@ -43,6 +43,7 @@ func main() {
 	r.HandleFunc("/signup", userC.Register).Methods("POST")
 	r.HandleFunc("/login", userC.Login).Methods("GET")
 	r.HandleFunc("/login", userC.SignIn).Methods("POST")
+	r.HandleFunc("/cookie", userC.CookieTest).Methods("GET")
 
 	fmt.Printf("Listening at port %s", serverPort)
 	http.ListenAndServe(":"+serverPort, r)

@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+const browserCookieName = "remember_token"
+
 // User defines the shape of a user
 type User struct {
 	us         models.UserService
@@ -66,6 +68,7 @@ func (u *User) Register(w http.ResponseWriter, r *http.Request) {
 		u.SignUpView.Render(w, vd)
 		return
 	}
+	u.signUserIn(w, &user)
 	// TODO: Impement after successfull signup
 	fmt.Fprintln(w, "User succesfully created")
 }
@@ -89,9 +92,34 @@ func (u *User) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// TODO: Impement after successfull login
+	u.signUserIn(w, user)
 	fmt.Fprintln(w, user)
 }
 
-func (u *User) signIn(w http.ResponseWriter, r *http.Request) {
-	//
+func (u *User) signUserIn(w http.ResponseWriter, user *models.User) {
+	if user.Remember == "" {
+		return
+	}
+	cookie := &http.Cookie{
+		Name:  browserCookieName,
+		Value: user.RememberHash,
+	}
+	http.SetCookie(w, cookie)
+}
+
+// CookieTest is used to test the cookie
+func (u *User) CookieTest(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie(browserCookieName)
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
+
+	user, err := u.us.ByRemember(cookie.Value)
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
+
+	fmt.Fprintf(w, "%+v", user)
 }

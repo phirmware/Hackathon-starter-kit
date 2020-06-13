@@ -51,12 +51,16 @@ var (
 	ErrInvalidPassword = errors.New("models: Password Invalid")
 	// ErrUserNotFound is returned when a user is not found
 	ErrUserNotFound = errors.New("models: We cant find an account with that email")
+	// ErrRememberNotFound is returned when a user with a rememberhash is not found
+	// TODO: Change the error name, its not descriptive enough
+	ErrRememberNotFound = errors.New("models: User does not exist-(remember)")
 )
 
 // UserDB defines all methods of the user service
 type UserDB interface {
 	Create(user *User) error
 	ByEmail(user *User) (*User, error)
+	ByRemember(token string) (*User, error)
 }
 
 var _ UserDB = &userGorm{}
@@ -256,6 +260,17 @@ func (uv *userVal) ByEmail(user *User) (*User, error) {
 func (ug *userGorm) ByEmail(user *User) (*User, error) {
 	if err := ug.db.First(user, "email = ?", user.Email).Error; err != nil {
 		return nil, err
+	}
+	return user, nil
+}
+
+func (ug *userGorm) ByRemember(token string) (*User, error) {
+	user := &User{
+		RememberHash: token,
+	}
+	if err := ug.db.First(user, "remember_hash = ?", token).Error; err != nil {
+		// TODO: Change the error name, its not descriptive enough
+		return nil, ErrRememberNotFound
 	}
 	return user, nil
 }
