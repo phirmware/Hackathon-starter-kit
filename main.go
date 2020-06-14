@@ -29,6 +29,7 @@ func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable", host, port, user, dbname)
 	svc, err := models.NewServices(psqlInfo)
 	requireUserMW := middleware.NewRequireUser(svc.User)
+	userMW := middleware.NewUser(svc.User)
 	if err != nil {
 		panic(err)
 	}
@@ -49,5 +50,5 @@ func main() {
 	r.HandleFunc("/protected", requireUserMW.RequireUserMiddleWare(userC.Protected)).Methods("GET")
 
 	fmt.Printf("Listening at port %s", serverPort)
-	http.ListenAndServe(":"+serverPort, r)
+	http.ListenAndServe(":"+serverPort, userMW.UserMiddleWareFn(r))
 }

@@ -17,6 +17,11 @@ type RequireUser struct {
 	us models.UserService
 }
 
+// User defines the shape of a user middleware
+type User struct {
+	us models.UserService
+}
+
 // NewRequireUser returns the requireUser struct
 func NewRequireUser(us models.UserService) *RequireUser {
 	return &RequireUser{
@@ -24,18 +29,36 @@ func NewRequireUser(us models.UserService) *RequireUser {
 	}
 }
 
+// NewUser returns the User struct
+func NewUser(us models.UserService) *User {
+	return &User{
+		us: us,
+	}
+}
+
 // RequireUserMiddleWare is the middleware function for user
 func (ru *RequireUser) RequireUserMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if _, t := r.Context().Value(contextUser).(*models.User); t {
+			next(w, r)
+			return
+		}
+		http.Redirect(w, r, "/login", http.StatusFound)
+	})
+}
+
+// UserMiddleWare is the middleware function for user
+func (u *User) UserMiddleWare(next http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie(BrowserCookieName)
 		if err != nil {
-			http.Redirect(w, r, "/login", http.StatusFound)
+			next(w, r)
 			return
 		}
 
-		user, err := ru.us.ByRemember(cookie.Value)
+		user, err := u.us.ByRemember(cookie.Value)
 		if err != nil {
-			http.Redirect(w, r, "/login", http.StatusFound)
+			next(w, r)
 			return
 		}
 
@@ -43,4 +66,9 @@ func (ru *RequireUser) RequireUserMiddleWare(next http.HandlerFunc) http.Handler
 		r = r.WithContext(ctx)
 		next(w, r)
 	})
+}
+
+// UserMiddleWareFn function is the user middleware function
+func (u *User) UserMiddleWareFn(next http.Handler) http.HandlerFunc {
+	return u.UserMiddleWare(next.ServeHTTP)
 }
