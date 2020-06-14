@@ -19,5 +19,5 @@ func NewStatic() *Static {
 
 // Home handles the / GET
 func (s *Static) Home(w http.ResponseWriter, r *http.Request) {
-	s.HomeView.Render(w, nil)
+	s.HomeView.Render(w, r, nil)
 }

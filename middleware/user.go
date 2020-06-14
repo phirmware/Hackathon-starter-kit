@@ -1,7 +1,9 @@
 package middleware
 
 import (
-	"context"
+	// "context"
+
+	appcontext "hackathon/context"
 	"hackathon/models"
 	"net/http"
 )
@@ -39,7 +41,8 @@ func NewUser(us models.UserService) *User {
 // RequireUserMiddleWare is the middleware function for user
 func (ru *RequireUser) RequireUserMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if _, t := r.Context().Value(contextUser).(*models.User); t {
+		user := appcontext.GetUserFromContext(r)
+		if user != nil {
 			next(w, r)
 			return
 		}
@@ -62,8 +65,7 @@ func (u *User) UserMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), contextUser, user)
-		r = r.WithContext(ctx)
+		r = appcontext.SetUserInContext(r, user)
 		next(w, r)
 	})
 }

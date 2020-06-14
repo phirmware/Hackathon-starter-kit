@@ -1,7 +1,9 @@
 package views
 
 import (
+	appcontext "hackathon/context"
 	"hackathon/models"
+	"net/http"
 )
 
 // Alert defines the shape of the alert object
@@ -18,10 +20,14 @@ type Data struct {
 }
 
 // SetData sets the data for th templates
-func SetData(data interface{}) {
+func SetData(r *http.Request, data interface{}) Data {
 	vd := Data{}
-	if _, t := data.(Data); t {
-	} else {
-		vd.Yield = data
+	user := appcontext.GetUserFromContext(r)
+	if d, t := data.(Data); t {
+		d.User = user
+		return d
 	}
+	vd.Yield = data
+	vd.User = user
+	return vd
 }

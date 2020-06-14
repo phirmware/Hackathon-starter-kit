@@ -26,6 +26,9 @@
     <link href="https://bootstrapmade.com/demo/themes/OnePage/assets/vendor/boxicons/css/boxicons.min.css"
         rel="stylesheet">
     <link href="https://bootstrapmade.com/demo/themes/OnePage/assets/vendor/remixicon/remixicon.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://allyoucan.cloud/cdn/icofont/1.0.1/icofont.css" integrity="sha384-jbCTJB16Q17718YM9U22iJkhuGbS0Gd2LjaWb4YJEZToOPmnKDjySVa323U+W7Fv" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://bootstrapmade.com/demo/themes/OnePage/assets/vendor/venobox/venobox.css" rel="stylesheet">
     <link href="https://bootstrapmade.com/demo/themes/OnePage/assets/vendor/owl.carousel/assets/owl.carousel.min.css"
         rel="stylesheet">
@@ -43,11 +46,11 @@
 </head>
 
 <body>
-    {{ template "nav" }}
+    {{ template "nav" .}}
     {{ if .Alert }}
     {{ template "alert" .Alert }}
     {{ end }}
-    {{ template "yield" }}
+    {{ template "yield" .}}
     {{ template "footer" }}
 
     <a href="#" class="back-to-top"><i class="ri-arrow-up-line"></i></a>

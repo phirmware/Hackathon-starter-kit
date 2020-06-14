@@ -39,12 +39,12 @@ func NewUser(us models.UserService) *User {
 
 // Login handles the /login GET
 func (u *User) Login(w http.ResponseWriter, r *http.Request) {
-	u.LoginView.Render(w, nil)
+	u.LoginView.Render(w, r, nil)
 }
 
 // SignUp handles the /signup GET
 func (u *User) SignUp(w http.ResponseWriter, r *http.Request) {
-	u.SignUpView.Render(w, nil)
+	u.SignUpView.Render(w, r, nil)
 }
 
 // Register handles the /signup POST
@@ -64,12 +64,11 @@ func (u *User) Register(w http.ResponseWriter, r *http.Request) {
 			Type:    "danger",
 			Message: err.Error(),
 		}
-		u.SignUpView.Render(w, vd)
+		u.SignUpView.Render(w, r, vd)
 		return
 	}
 	u.signUserIn(w, &user)
-	// TODO: Impement after successfull signup
-	fmt.Fprintln(w, "User succesfully created")
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 // SignIn handles the signin route POST /login
@@ -87,12 +86,11 @@ func (u *User) SignIn(w http.ResponseWriter, r *http.Request) {
 			Type:    "danger",
 			Message: err.Error(),
 		}
-		u.LoginView.Render(w, data)
+		u.LoginView.Render(w, r, data)
 		return
 	}
-	// TODO: Impement after successfull login
 	u.signUserIn(w, user)
-	fmt.Fprintln(w, user)
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func (u *User) signUserIn(w http.ResponseWriter, user *models.User) {
