@@ -15,6 +15,6 @@
 12. Setup middleware ✔
 13. Setup user context ✔
 14. Setup User in data and views with middleware ✔
-15. Setup Post models and controllers ❎
-
+15. Setup Post models and controllers ✔
+16. Setup post creation and deletion ❎
 
