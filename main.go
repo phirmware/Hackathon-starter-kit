@@ -39,6 +39,7 @@ func main() {
 
 	staticC := controllers.NewStatic()
 	userC := controllers.NewUser(svc.User)
+	postC := controllers.NewPost(svc.Post)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", staticC.Home)
@@ -48,6 +49,7 @@ func main() {
 	r.HandleFunc("/login", userC.SignIn).Methods("POST")
 	r.HandleFunc("/cookie", userC.CookieTest).Methods("GET")
 	r.HandleFunc("/protected", requireUserMW.RequireUserMiddleWare(userC.Protected)).Methods("GET")
+	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.PostPage)).Methods("GET")
 
 	fmt.Printf("Listening at port %s", serverPort)
 	http.ListenAndServe(":"+serverPort, userMW.UserMiddleWareFn(r))

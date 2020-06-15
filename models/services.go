@@ -10,6 +10,7 @@ import (
 type Services struct {
 	db   *gorm.DB
 	User UserService
+	Post PostService
 }
 
 // NewServices returns the services struct
@@ -26,6 +27,7 @@ func NewServices(connectionString string) (*Services, error) {
 	db.LogMode(true)
 	return &Services{
 		User: NewUserService(db),
+		Post: NewPostService(db),
 		db:   db,
 	}, nil
 }
