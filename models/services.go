@@ -34,12 +34,12 @@ func NewServices(connectionString string) (*Services, error) {
 
 // AutoMigrate automatically creates the table in the database
 func (s *Services) AutoMigrate() error {
-	return s.db.AutoMigrate(&User{}).Error
+	return s.db.AutoMigrate(&User{}, &Post{}).Error
 }
 
 // DestroyAndCreate drops all tables and recreates
 func (s *Services) DestroyAndCreate() error {
-	if err := s.db.DropTableIfExists(&User{}).Error; err != nil {
+	if err := s.db.DropTableIfExists(&User{}, &Post{}).Error; err != nil {
 		return err
 	}
 	return s.AutoMigrate()

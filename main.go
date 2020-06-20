@@ -50,6 +50,8 @@ func main() {
 	r.HandleFunc("/cookie", userC.CookieTest).Methods("GET")
 	r.HandleFunc("/protected", requireUserMW.RequireUserMiddleWare(userC.Protected)).Methods("GET")
 	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.PostPage)).Methods("GET")
+	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.HandlePost)).Methods("POST")
+	r.HandleFunc("/list", requireUserMW.RequireUserMiddleWare(postC.ListPage)).Methods("GET")
 
 	fmt.Printf("Listening at port %s", serverPort)
 	http.ListenAndServe(":"+serverPort, userMW.UserMiddleWareFn(r))

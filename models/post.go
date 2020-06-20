@@ -1,14 +1,24 @@
 package models
 
 import (
+	"errors"
+
 	"github.com/jinzhu/gorm"
+)
+
+var (
+	// ErrPostMissing is returned when post field is missing
+	ErrPostMissing = errors.New("models: Provide a Post")
+	// ErrTitleMissing is returned when a title is miising
+	ErrTitleMissing = errors.New("models: Provide a title")
 )
 
 // Post defines the shape of the post model
 type Post struct {
 	gorm.Model
-	Title   string `gorm:"not null"`
-	Message string `gorm:"not null"`
+	UserID uint   `gorm:"not null"`
+	Title  string `gorm:"not null"`
+	Post   string `gorm:"not null"`
 }
 
 // PostService interface
@@ -17,7 +27,8 @@ type PostService interface {
 }
 
 type postDB interface {
-	Create(*Post) error
+	Create(post *Post) error
+	FindByUserID(id uint) (*[]Post, error)
 }
 
 type postService struct {
@@ -62,6 +73,46 @@ func NewPostService(db *gorm.DB) PostService {
 	}
 }
 
-func (pg *postGorm) Create(*Post) error {
+type postValFn func(post *Post) error
+
+func runPostValFns(post *Post, fns ...postValFn) error {
+	for _, fn := range fns {
+		if err := fn(post); err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+func (pv *postVal) checkForTitle(post *Post) error {
+	if post.Title == "" {
+		return ErrTitleMissing
+	}
+	return nil
+}
+
+func (pv *postVal) checkForPost(post *Post) error {
+	if post.Post == "" {
+		return ErrPostMissing
+	}
+	return nil
+}
+
+func (pv *postVal) Create(post *Post) error {
+	if err := runPostValFns(post, pv.checkForTitle); err != nil {
+		return err
+	}
+	return pv.postDB.Create(post)
+}
+
+func (pg *postGorm) Create(post *Post) error {
+	return pg.db.Create(post).Error
+}
+
+func (pg *postGorm) FindByUserID(id uint) (*[]Post, error) {
+	posts := &[]Post{}
+	if err := pg.db.Find(posts, "user_id = ?", id).Error; err != nil {
+		return nil, err
+	}
+	return posts, nil
 }
