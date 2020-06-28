@@ -52,6 +52,7 @@ func main() {
 	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.PostPage)).Methods("GET")
 	r.HandleFunc("/post", requireUserMW.RequireUserMiddleWare(postC.HandlePost)).Methods("POST")
 	r.HandleFunc("/list", requireUserMW.RequireUserMiddleWare(postC.ListPage)).Methods("GET")
+	r.HandleFunc("/delete/{id}", requireUserMW.RequireUserMiddleWare(postC.HandleDelete)).Methods("POST")
 
 	fmt.Printf("Listening at port %s", serverPort)
 	http.ListenAndServe(":"+serverPort, userMW.UserMiddleWareFn(r))

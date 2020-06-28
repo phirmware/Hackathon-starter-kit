@@ -5,6 +5,9 @@ import (
 	"hackathon/models"
 	"hackathon/views"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 // Post defines the shape of the struct
@@ -61,5 +64,43 @@ func (p *Post) HandlePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, "/list", http.StatusFound)
+}
 
+// HandleDelete deletes a post from the database
+func (p *Post) HandleDelete(w http.ResponseWriter, r *http.Request) {
+	pd := &views.Data{}
+	vars := mux.Vars(r)
+	id := vars["id"]
+	idInt, err := strconv.Atoi(id)
+	if err != nil {
+		return
+	}
+	uID := uint(idInt)
+	user := appcontext.GetUserFromContext(r)
+	post, err := p.ps.FindPostByID(uID)
+	if err != nil {
+		pd.Alert = &views.Alert{
+			Type:    "danger",
+			Message: err.Error(),
+		}
+		p.ListView.Render(w, r, pd)
+		return
+	}
+	if post.UserID != user.ID {
+		pd.Alert = &views.Alert{
+			Type:    "danger",
+			Message: models.ErrPostMissing.Error(),
+		}
+		p.ListView.Render(w, r, pd)
+		return
+	}
+	if err := p.ps.Delete(post); err != nil {
+		pd.Alert = &views.Alert{
+			Type:    "danger",
+			Message: err.Error(),
+		}
+		return
+	}
+
+	http.Redirect(w, r, "/list", http.StatusFound)
 }

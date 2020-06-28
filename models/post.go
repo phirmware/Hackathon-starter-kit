@@ -11,6 +11,8 @@ var (
 	ErrPostMissing = errors.New("models: Provide a Post")
 	// ErrTitleMissing is returned when a title is miising
 	ErrTitleMissing = errors.New("models: Provide a title")
+	// ErrInvalidID is returned when an invalid ID is passed
+	ErrInvalidID = errors.New("models: Post not found")
 )
 
 // Post defines the shape of the post model
@@ -28,7 +30,9 @@ type PostService interface {
 
 type postDB interface {
 	Create(post *Post) error
+	Delete(post *Post) error
 	FindByUserID(id uint) (*[]Post, error)
+	FindPostByID(id uint) (*Post, error)
 }
 
 type postService struct {
@@ -98,6 +102,13 @@ func (pv *postVal) checkForPost(post *Post) error {
 	return nil
 }
 
+func (pv *postVal) checkID(post *Post) error {
+	if post.ID == 0 {
+		return ErrInvalidID
+	}
+	return nil
+}
+
 func (pv *postVal) Create(post *Post) error {
 	if err := runPostValFns(post, pv.checkForTitle); err != nil {
 		return err
@@ -115,4 +126,23 @@ func (pg *postGorm) FindByUserID(id uint) (*[]Post, error) {
 		return nil, err
 	}
 	return posts, nil
+}
+
+func (pg *postGorm) FindPostByID(id uint) (*Post, error) {
+	post := &Post{}
+	if err := pg.db.First(post, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+	return post, nil
+}
+
+func (pv *postVal) Delete(post *Post) error {
+	if err := runPostValFns(post, pv.checkID); err != nil {
+		return err
+	}
+	return pv.postDB.Delete(post)
+}
+
+func (pg *postGorm) Delete(post *Post) error {
+	return pg.db.Delete(post, "id = ?", post.ID).Error
 }

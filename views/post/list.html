@@ -17,6 +17,9 @@
                     <div class="icon"><i class="ri-stack-line"></i></div>
                     <h4 class="title"><a href="">{{ .Title }}</a></h4>
                     <p class="description">{{ .Post }}</p>
+                    <form action="/delete/{{ .ID }}" method="post">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
             </div>
             {{ end }}
